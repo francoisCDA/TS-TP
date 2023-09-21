@@ -2,9 +2,9 @@ let userName: string = "la valeur de votre choix" ;
 let userAge: number = 123 ;
 let isLogin: boolean = true ;
 
-let userNames: string[] ;
+let userNames: string[] = []; 
 
-userNames.push(userName);
+userNames.push(userName) ;
 
 let person: object;
 

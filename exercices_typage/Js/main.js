@@ -1,7 +1,7 @@
 let userName = "la valeur de votre choix";
 let userAge = 123;
 let isLogin = true;
-let userNames;
+let userNames = [];
 userNames.push(userName);
 let person;
 person = {
