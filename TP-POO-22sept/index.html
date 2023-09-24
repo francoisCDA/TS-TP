@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script> 
+    <link rel="stylesheet" href="css/main.css">
+    <script type="module" src="./js/main.js" defer></script>
+    <title>TP-22sept</title>
+</head>
+<body>
+    <div class="container">
+        <div id="saisie" class="row">
+
+            <div id="eleve" class="col-4">
+                <form action="" class="d-flex flex-column">
+                    <label for="listeEleve">Sélectionner un élève</label>
+                    <select name="listeEleve" id="listeEleve">
+                        <option value="-1">-- Aucun éleve --</option>
+                    </select>
+                    <hr class="flex-grow-1">
+                    <label for="inNom">Indiquer un nom</label>
+                    <input type="text" name="inNom" id="inNom">
+                    <label for="inPrenom">Indiquer un prénom</label>
+                    <input type="text" name="inPrenom" id="inPrenom">
+
+                    <label for="addEleve">Ajouter un élève</label>
+                    <button type="button" id="addEleve" class="mt-auto  btn btn-primary">+</button>
+                </form>
+            </div>
+
+            <div id="matiere" class="col-4">
+                <form action="" class="d-flex flex-column">
+                    <label for="listeMatiere">Sélectionner une matière</label>
+                    <select name="listeMatiere" id="listeMatiere">
+                        <option value="-1">-- Aucune matière --</option>
+                    </select>
+                    <hr class="flex-grow-1">
+    
+                    <label for="inMatiere">Indiquer une matière</label>
+                    <input type="text" name="inMAtiere" id="inMatiere">
+    
+                    <label for="addMatiere">Ajouter une matière</label>
+                    <button type="button" id="addMatiere" class="mt-auto btn btn-primary">+</button>
+                </form>
+
+            </div>
+
+            <div id="note" class="col-4">
+                <form action="" class="d-flex flex-column">
+                    <p>Selectionner une éléve et une matière avant de pouvoir ajouter une note</p>
+                    <hr class="flex-grow-1">
+
+                    <label for="inNote">Indiquer une note</label>
+                    <input type="text" name="inNote" id="inNote">
+                    
+                    <label for="addNote">Ajouter une matière</label>
+                    <button type="button" id="addNote" class="mt-auto  btn btn-primary">+</button>
+
+                </form>
+            </div>
+
+
+        </div>
+
+
+
+
+
+    </div>
+</body>
+</html>
