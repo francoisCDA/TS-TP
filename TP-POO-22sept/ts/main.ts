@@ -94,6 +94,7 @@ if (btnAddMat && inpMatiere && selectMat) {
     }
 }
 
+
 // ajouter une note
 
 function addNote(indEleve: number, indMat: number, note: number):void {
@@ -109,8 +110,43 @@ if (btnAddNote && inpNote && selectEleve && selectMat) {
     }
 }
 
+// affichage
+
+const affMoyenne = document.getElementById('moyenne') as HTMLParagraphElement;
+const affNotes = document.getElementById('tableauAffichage') as HTMLTableSectionElement;
 
 
+function uptAfficheNotes(): void {
+    affNotes.innerHTML = '';
+    let somme: number = 0 ; 
+    let cmpt: number = 0 ;
+    
+    lstNotes.forEach( note => {
+        
+        const newTr = document.createElement('tr');
+        
+        note.noteTupple().forEach( (item) => {
+            const newTd = document.createElement('td');
+            newTd.innerText = item;
+            newTr.appendChild(newTd);
+        });
+
+        somme += note.note ;
+        cmpt++ ;
+       
+        affNotes.appendChild(newTr);
+    })
+
+
+
+}
+
+
+
+
+
+
+// générer données
 
 function generateur(nb: number): void {
  addEleve("Jacques", "Jean");
@@ -140,6 +176,7 @@ for (let i: number = 0 ; i < nb ; i++) {
 }
 
 console.dir(lstNotes);
+uptAfficheNotes();
 
 }
 

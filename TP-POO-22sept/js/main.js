@@ -63,6 +63,24 @@ if (btnAddNote && inpNote && selectEleve && selectMat) {
         }
     };
 }
+const affMoyenne = document.getElementById('moyenne');
+const affNotes = document.getElementById('tableauAffichage');
+function uptAfficheNotes() {
+    affNotes.innerHTML = '';
+    let somme = 0;
+    let cmpt = 0;
+    lstNotes.forEach(note => {
+        const newTr = document.createElement('tr');
+        note.noteTupple().forEach((item) => {
+            const newTd = document.createElement('td');
+            newTd.innerText = item;
+            newTr.appendChild(newTd);
+        });
+        somme += note.note;
+        cmpt++;
+        affNotes.appendChild(newTr);
+    });
+}
 function generateur(nb) {
     addEleve("Jacques", "Jean");
     addEleve("Gandhi", "Yves");
@@ -88,5 +106,6 @@ function generateur(nb) {
         addNote(Math.floor(Math.random() * lstEleves.length), Math.floor(Math.random() * lstMatieres.length), Math.round(Math.random() * 200) / 10);
     }
     console.dir(lstNotes);
+    uptAfficheNotes();
 }
 generateur(100);

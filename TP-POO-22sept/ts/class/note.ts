@@ -11,5 +11,13 @@ export class Note {
         this._note = note;
     }
 
+    get nom() { return this._nom.toUpperCase() } 
+    get prenom() { return this._prenom } 
+    get matiere() { return this._matiere } 
+    get note() { return this._note }
+
+    noteTupple(): [string,string,string,string] {
+        return [this._nom.toUpperCase(),this._prenom,this._matiere,this._note.toString()];
+    }
 
 }
