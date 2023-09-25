@@ -9,7 +9,7 @@
     <title>TP TS</title>
 </head>
 <body>
-    <div class="container row">
+    <div class="container row m-auto">
         <div class="contacts col-4 d-flex flex-column">
             <p class="titre">Contacts</p>
             <hr>
@@ -17,33 +17,65 @@
 
             </div>
             <hr>
-            <button type="button" class="btn btn-success">Add</button>
+            <button type="button" id="btnAddContact" class="btn btn-success">Add</button>
         </div>
-        <div class="details col-8 d-flex flex-column">
-            <p class="titre">Détails</p>
-            <hr>
-            <div class="sBloc row d-flex">
-                <div class="ssBloc col-8 d-flex flex-column">
-                    <label for="inNom">Prénom</label>
-                    <input type="text" name="inNom" id="inNom" placeholder="Jean">
-                    <label for="inPrenom">Nom</label>
-                    <input type="text" name="inPrenom" id="inPrenom" placeholder="MARTIN">
-                    <div class="sssBloc row">
-                        <label for="inDate">Date de naissance</label>
-                        <input type="date" name="inDate" id="inDate" placeholder="25/09/1923">
-                        <p class="age">100ans</p>
+        <div class="panneau col-8 d-flex flex-column">
+            <div class="details">
+                <p class="titre">Détails</p>
+                <hr>
+                <div class="sBloc row d-flex">
+                    <div class="ssBloc col-8 d-flex flex-column">
+                        <p>Prénom :</p>
+                        <p class="infoCtct">Elisabethe</p>
+                        <p>Nom :</p>
+                        <p class="infoCtct">Martin</p>
+                        <p>Date de naissance</p>
+                        <div class="sssBloc d-flex">
+                            <p class="infoCtct">22/09/1923</p>
+                            <p class="age ms-2">100ans</p>
+                        </div>
                     </div>
-                    <label for="mail">Email</label>
-                    <input type="email" name="mail" id="name">
-                    <label for="telephone">Numéro de téléphone</label>
-                    <input type="text" name="telephone" id="telephone">
+                    <div class="ssBloc col-4">
+                        <img src="./img/profil.png" alt="image de profil">
+                    </div>
+                    <p>Courriel</p>
+                    <p class="infoCtct">elimartin@wanadoo.fr</p>
+                    <p>Téléphone</p>
+                    <p class="infoCtct">0123456789</p>
                     <hr>
                     <div class="sssBloc">
                         <button type="button" class="btn btn-warning" id="btnEdit">Editer</button>
                         <button type="button" class="btn btn-danger" id="btnDelete">Supprimer</button>
                     </div>
+                    <div class="col-12">
+                    </div>
                 </div>
             </div>
+            <form action="" class="d-flex flex-column d-none">
+                <label for="inNom">Prénom</label>
+                <input type="text" name="inNom" id="inNom" placeholder="Jean">
+                
+                <label for="inPrenom">Nom</label>
+                <input type="text" name="inPrenom" id="inPrenom" placeholder="MARTIN">
+                
+                <label for="inDate">Date de naissance</label>
+                <input type="date" name="inDate" id="inDate" placeholder="25/09/1923">
+                        
+                <label for="mail">Email</label>
+                <input type="email" name="mail" id="name">
+                
+                <label for="telephone">Numéro de téléphone</label>
+                <input type="text" name="telephone" id="telephone">
+                
+                <label for="telephone">Url de l'avatar</label>
+                <input type="text" name="urlSrc" id="urlSrc">
+                
+                <hr>
+                <div class="sssBloc">
+                    <button type="button" class="btn btn-warning" id="btnEdit">Editer</button>
+                </div>
+            </form>
+
         </div>
     </div>
 </body>
