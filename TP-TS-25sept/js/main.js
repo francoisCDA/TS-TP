@@ -6,7 +6,7 @@ const btnAddContact = document.getElementById('btnAddContact');
 const btnEditSuppr = document.getElementById('btnEditSuppr');
 const btnSuppr = document.getElementById('btnDelete');
 const btnEdit = document.getElementById('btnEdit');
-const imgProfil = document.getElementById('#details img');
+const imgProfil = document.querySelector('#details img');
 const inputs = document.querySelectorAll('#formulaire input');
 btnEdit.onclick = () => {
     initForm(focus);
@@ -85,6 +85,7 @@ function affichCtct(ind = focus) {
             }
             const affAge = document.querySelector('.age');
             affAge.innerHTML = contct.age.toString() + " ans";
+            imgProfil.src = infosCtct[5];
         }
     });
 }

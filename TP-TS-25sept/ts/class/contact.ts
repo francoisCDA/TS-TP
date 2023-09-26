@@ -28,7 +28,7 @@ export default class Contact {
         return hui.getFullYear() - anniv.getFullYear() - ( anniv < this._dateNaissance  ? 1 : 0 ) ;
     }
 
-    get dateFormat() {
+    get dateFormat() { // .tolocaldatestring() quelque chose...
         const jr: number = this._dateNaissance.getDate();
         const ms: number = this._dateNaissance.getMonth() + 1;
         const an: number = this._dateNaissance.getFullYear();

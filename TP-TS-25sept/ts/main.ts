@@ -10,7 +10,7 @@ const btnEditSuppr = document.getElementById('btnEditSuppr') as HTMLButtonElemen
 const btnSuppr = document.getElementById('btnDelete') as HTMLButtonElement;
 const btnEdit = document.getElementById('btnEdit') as HTMLButtonElement;
 
-const imgProfil = document.getElementById('#details img') as HTMLImageElement;
+const imgProfil = document.querySelector('#details img') as HTMLImageElement;
 
 const inputs = document.querySelectorAll('#formulaire input') as NodeListOf<HTMLInputElement> ;
 
@@ -108,15 +108,6 @@ btnEditSuppr.onclick = () => {
 }
 
 
-/* function dateFomat(date: Date): string {
-    const jr: number = date.getDate();
-    const ms: number = date.getMonth() + 1;
-    const an: number = date.getFullYear();
-
-    return `${jr < 10 ? `0${jr}` : `${jr}`}/${ms < 10 ? `0${ms}` : `${ms}`}/${an}`;
-}
- */
-
 function affichCtct(ind: number=focus):void {
     focus = ind;
     annuaire.forEach( (contct) => { 
@@ -130,6 +121,8 @@ function affichCtct(ind: number=focus):void {
 
             const affAge = document.querySelector('.age') as HTMLParagraphElement;
             affAge.innerHTML = contct.age.toString() + " ans";
+
+            imgProfil.src = infosCtct[5];
 
         }
     })    
