@@ -20,7 +20,7 @@
             <button type="button" id="btnAddContact" class="btn btn-success">Add</button>
         </div>
         <div class="panneau col-8 d-flex flex-column">
-            <div class="details">
+            <div id="details" class="switch details">
                 <p class="titre">Détails</p>
                 <hr>
                 <div class="sBloc row d-flex">
@@ -51,28 +51,28 @@
                     </div>
                 </div>
             </div>
-            <form action="" class="d-flex flex-column d-none">
+            <form id="formulaire" action="" class="switch d-flex flex-column d-none">
                 <label for="inNom">Prénom</label>
-                <input type="text" name="inNom" id="inNom" placeholder="Jean">
+                <input type="text" name="inNom" id="inNom" placeholder="NOM">
                 
                 <label for="inPrenom">Nom</label>
-                <input type="text" name="inPrenom" id="inPrenom" placeholder="MARTIN">
+                <input type="text" name="inPrenom" id="inPrenom" placeholder="Prénom">
                 
                 <label for="inDate">Date de naissance</label>
                 <input type="date" name="inDate" id="inDate" placeholder="25/09/1923">
                         
-                <label for="mail">Email</label>
-                <input type="email" name="mail" id="name">
+                <label for="mail">Courriel</label>
+                <input type="email" name="mail" id="name" placeholder="exemple@mail.fr">
                 
                 <label for="telephone">Numéro de téléphone</label>
-                <input type="text" name="telephone" id="telephone">
+                <input type="text" name="telephone" id="telephone" placeholder="0123456789">
                 
                 <label for="telephone">Url de l'avatar</label>
-                <input type="text" name="urlSrc" id="urlSrc">
+                <input type="text" name="urlSrc" id="urlSrc" placeholder="http://....">
                 
                 <hr>
                 <div class="sssBloc">
-                    <button type="button" class="btn btn-warning" id="btnEdit">Editer</button>
+                    <button type="button" class="btn btn-warning" id="btnEditSuppr">Editer</button>
                 </div>
             </form>
 

@@ -1,14 +1,81 @@
 import Contact from "./class/contact.js";
 const annuaire = [];
+let focus;
 const lstContact = document.getElementById('listContacts');
 const btnAddContact = document.getElementById('btnAddContact');
-function dateFomat(date) {
-    const jr = date.getDate();
-    const ms = date.getMonth() + 1;
-    const an = date.getFullYear();
-    return `${jr < 10 ? `0${jr}` : `${jr}`}/${ms < 10 ? `0${ms}` : `${ms}`}/${an}`;
+const btnEditSuppr = document.getElementById('btnEditSuppr');
+const btnSuppr = document.getElementById('btnDelete');
+const btnEdit = document.getElementById('btnEdit');
+const imgProfil = document.getElementById('#details img');
+const inputs = document.querySelectorAll('#formulaire input');
+btnEdit.onclick = () => {
+    initForm(focus);
+    switchAff('Editer');
+};
+btnSuppr.onclick = () => {
+    let eliminer = 0;
+    for (let i; i < annuaire.length; i++) {
+        if (annuaire[i].numID == focus) {
+            const check = confirm(`Voulez-vous supprimer ${annuaire[i].nomDuContact} de l'annuaire`);
+            if (check) {
+                eliminer = i;
+            }
+        }
+        break;
+    }
+    annuaire.splice(eliminer, 1);
+    const contacts = document.querySelectorAll('#listContacts > button');
+    let delButton;
+    contacts.forEach(button => {
+        if (button.getAttribute("data-numID") == focus.toString()) {
+            delButton = button;
+        }
+    });
+    lstContact.removeChild(delButton);
+};
+function initForm(target = 0) {
+    if (target == 0) {
+        inputs.forEach(input => { input.value = ''; });
+    }
+    else {
+        for (let i = 0; i < annuaire.length; i++) {
+            if (annuaire[i].numID == target) {
+                const infoCtct = annuaire[i].infosContactStr;
+                for (let j = 0; j < inputs.length; j++) {
+                    inputs[j].value = infoCtct[j];
+                }
+                break;
+            }
+        }
+    }
 }
-function affichCtct(ind) {
+function switchAff(label) {
+    btnEditSuppr.innerText = label;
+    const chDisplay = document.querySelectorAll(".switch");
+    chDisplay.forEach(balise => { balise.classList.toggle('d-none'); });
+}
+btnAddContact.onclick = () => {
+    focus = 0;
+    initForm(focus);
+    switchAff('Ajouter');
+};
+btnEditSuppr.onclick = () => {
+    if (focus == 0) {
+        addContact(inputs[0].value, inputs[1].value, new Date(inputs[2].value), inputs[3].value, inputs[4].value, inputs[5].value);
+    }
+    else {
+        for (let i = 0; i < annuaire.length; i++) {
+            if (annuaire[i].numID == focus) {
+                annuaire[i].uptInfosContact(inputs[0].value, inputs[1].value, new Date(inputs[2].value), inputs[3].value, inputs[4].value, inputs[5].value);
+                affichCtct();
+                break;
+            }
+        }
+    }
+    switchAff('Editer');
+};
+function affichCtct(ind = focus) {
+    focus = ind;
     annuaire.forEach((contct) => {
         if (contct.numID == ind) {
             const infosCtct = contct.infosContactStr;
