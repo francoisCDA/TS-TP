@@ -1,0 +1,8 @@
+{ 
+    "compilerOptions": {
+        "target": "ES6",
+        "rootDir": "./Ts",
+        "outDir": "./Js",
+        "removeComments": true  
+    }
+}
