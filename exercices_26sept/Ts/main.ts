@@ -51,16 +51,16 @@ population.forEach( personne => {console.log(`${personne.nom} ${personne.age} ${
 
 console.dir(population);
 
-let pileDeString = new Pile("premierstring");
+let pileDeString = new Pile;
 
-pileDeString.monPush("deuxièm string");
+pileDeString.monPush("4");
 pileDeString.monPush("quatrième string");
 pileDeString.monPop();
 pileDeString.monPush("troisième string");
 
 console.dir(pileDeString);
 
-let pileDeNumber = new Pile(1);
+let pileDeNumber = new Pile<number>();
 
 pileDeNumber.monPush(2);
 pileDeNumber.monPush(3);
@@ -72,7 +72,7 @@ console.dir(pileDeNumber);
 
 let pileDeBoolean: Pile<boolean> ;
 
-pileDeBoolean = new Pile(true);
+pileDeBoolean = new Pile();
 
 pileDeBoolean.monPush(true);
 pileDeBoolean.monPush(false);

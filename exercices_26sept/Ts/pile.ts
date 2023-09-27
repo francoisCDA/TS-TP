@@ -1,8 +1,8 @@
 export class Pile<T> {
     private monArray: T[];
 
-    constructor(item: T) {
-        this.monArray = [item];
+    constructor() {
+        this.monArray = [];
     }
 
     monPush(newItem: T) {

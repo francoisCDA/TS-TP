@@ -1,6 +1,6 @@
 export class Pile {
-    constructor(item) {
-        this.monArray = [item];
+    constructor() {
+        this.monArray = [];
     }
     monPush(newItem) {
         this.monArray.push(newItem);
