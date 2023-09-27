@@ -3,10 +3,57 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <script type="module" src="./js/main.js"></script>
+    <link rel="stylesheet" href="./css/main.css">
+    <script type="module" src="./js/main.js" defer></script>
     <title>TP Recette</title>
 </head>
 <body>
+
+    <dialog>
+        <div>
+            <p>infos recette</p>
+            <button type="button" id="btnCloseModal">Fermer</button>
+        </div>
+
+    </dialog>
     
+    
+    <div class="container">
+        <div class="form-container">
+          <form>
+
+            <div class="form-group">
+              <label for="slider1">Slider 1:</label>
+              <input type="range" id="slider1" name="slider1" min="0" max="100" step="1" value="50">
+            </div>
+    
+            <div class="form-group">
+              <label for="slider2">Slider 2:</label>
+              <input type="range" id="slider2" name="slider2" min="0" max="100" step="1" value="25">
+            </div>
+    
+            <div class="form-group">
+              <label for="textInput">Text Input:</label>
+              <input type="text" id="textInput" name="textInput" placeholder="Saisissez du texte">
+            </div>
+    
+            <div class="form-group">
+              <label for="selectBox">Sélection multiple:</label>
+              <select id="selectBox" name="selectBox" multiple>
+                <option value="option1">Option 1</option>
+                <option value="option2">Option 2</option>
+                <option value="option3">Option 3</option>
+              </select>
+            </div>
+ 
+          </form>
+        </div>
+    
+        <div class="recettes-container">
+
+        </div>
+      </div>
+
+
 </body>
 </html>
