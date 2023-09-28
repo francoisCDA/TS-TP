@@ -7,6 +7,7 @@ import { Recipe } from "./interface/recipe.js";
 const recipesList: Recipe[] = [] ;
 for ( const cle in recipes ) { recipesList.push(recipes[cle]); }
 
+
 // récupération des clés et affectation à chaque recette
 // potentiellement inutile, je pense pouvoir m'en passer...
 
@@ -15,6 +16,7 @@ const recettesKeys = Object.keys(recipes);
 for (let i = 0 ; i < recipesList.length ; i++) {
     recipesList[i].id =recettesKeys[i];
 }
+
 console.dir(recipesList);
 
 
@@ -52,16 +54,49 @@ function megaFilter(tmpPrep: number = 15, tmpCook: number = 30, nom: string = ''
     return recettesOk;
 }
 
-function updModal(recet: Recipe): void {
-    console.log("From Modal");
-    console.dir(recet);
-}
 
 //affichage des "boutons-menus"
 
 const domLstRecettes = document.querySelector('.recettes-container') as HTMLDivElement ;
 const modalRecette = document.querySelector("dialog") as HTMLDialogElement ;
 const btnModalExit = document.getElementById("btnCloseModal") as HTMLButtonElement ;
+
+// utilisé  pour les 2 listes dans les modales, et pour les options dans le select, le nom ne correpond plus à ce qu'elle a finie par faire...
+function liGenerator(parent: HTMLElement, items: string[], type: string): void {
+    parent.innerHTML = '' ;
+    
+    const liList: HTMLLIElement[] = [];
+    
+    items.forEach (item => {
+        const newLi = document.createElement(type);
+        newLi.innerText = item;
+                
+        parent.appendChild(newLi);
+    })
+  
+}
+
+
+function updModal(recet: Recipe): void {
+
+    const modalInfo = document.querySelectorAll('.input-modale') as NodeListOf<HTMLSpanElement> ;
+
+    modalInfo[0].innerText = recet.prepTime;
+    modalInfo[1].innerText = recet.cookTime;
+    modalInfo[2].innerText = `${recet.servings} ${recet.servings > 1 ? 'servings' : 'serving' }`;
+    modalInfo[3].innerText = recet.name;
+
+    const lstIngredients = document.getElementById('ingredients-list') as HTMLUListElement ;
+    const lstInstructions = document.getElementById('recette-script') as HTMLUListElement ;
+
+    const lstIngreArray: string[] = [] ;
+    recet.ingredients.forEach( ingr => lstIngreArray.push(`${ingr.name} (${ingr.amount})`) ) ;
+
+    liGenerator(lstIngredients, lstIngreArray,'li');
+    liGenerator(lstInstructions, recet.instructions,'li');
+
+}
+
 
 function mkButtonMenus(lstRecets: Recipe[]): void {
     lstRecets.forEach( recet => {
@@ -81,6 +116,32 @@ btnModalExit.onclick = () => { modalRecette.close() }
 
 mkButtonMenus(recipesList);
 
+
+// les selecteurs filtres
+
+const selectIngredients = document.getElementById('opt-ingredients') as HTMLElement;
+
+function mkIngredientsOpt(): void {
+
+    const allIngredients: string[] = [] ;
+
+    recipesList.forEach( recette => { 
+        
+        for (const ingredient in recette.ingredients) {
+            if (!allIngredients.includes(recette.ingredients[ingredient].name)) { allIngredients.push(recette.ingredients[ingredient].name)}
+        }
+    });
+
+    console.dir(allIngredients);
+    liGenerator(selectIngredients,allIngredients,'option');
+
+    //const lstOpt 
+
+
+    //selectIngredients.innerHTML = '';
+}
+
+mkIngredientsOpt();
 
 
 

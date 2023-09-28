@@ -9,21 +9,26 @@ body {
     display: flex;
 }
 
-.form-container {
-   
+.container-modale {
+    display: flex;
+}
+
+#btnCloseModal {
+    margin-left: auto;
+}
+
+.form-container, .left {
     width: 25%;
     padding-right: 20px;
 }
 
-.recettes-container {
-  
+.recettes-container, .right {
     width: 75%;
 }
 
-.container > div, .form-group {
+.container > div, .form-group, .left, .right {
     display: flex;
-    flex-direction: column;
-    
+    flex-direction: column;   
 }
 
 .form-group {

@@ -10,9 +10,39 @@
 <body>
 
     <dialog>
-        <div>
-            <p>infos recette</p>
-            <button type="button" id="btnCloseModal">Fermer</button>
+        <div class="container-modale">
+            <div class="left">
+              <span>Preparation Time</span>
+              <span class="input-modale">2 jours</span>
+              <span>Coocking Time</span>
+              <span class="input-modale">3 mois</span>
+              <span>Servings</span>
+              <span class="input-modale">1 personnes</span>
+              <span>Ingredients</span>
+                <ul id="ingredients-list">
+                  <li>Ingredient 1</li>
+                  <li>Ingredient 2</li>
+                  <li>Ingredient 3</li>
+                </ul>
+            </div>
+
+            <div class="right">
+              <div class="container-modale">
+                <span class="input-modale">Lorem ipsum dolor sit.</span> 
+                <button type="button" id="btnCloseModal">Fermer</button>
+              </div>
+              <hr>
+              <ul id="recette-script">
+                <li>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Quisquam, itaque?</li>
+                <li>Molestias aspernatur odit harum nemo perspiciatis, corporis laborum dolore ratione?</li>
+                <li>Libero enim saepe cum ipsa provident aut laudantium nesciunt pariatur.</li>
+                <li>Corrupti eos veniam vitae delectus labore hic cupiditate autem esse?</li>
+                <li>Ratione, aut fugiat. Possimus, perferendis non officiis error exercitationem sint?</li>
+                <li>Quos earum at beatae! Cupiditate dolorem dolore ea! Delectus, minus!</li>
+                <li>Magni voluptatem laboriosam ea nobis totam doloribus vero quidem consectetur.</li>
+              </ul>
+            </div>
+
         </div>
 
     </dialog>
@@ -38,8 +68,8 @@
             </div>
     
             <div class="form-group">
-              <label for="selectBox">Sélection multiple:</label>
-              <select id="selectBox" name="selectBox" multiple>
+              <label for="opt-ingredients">Sélection multiple:</label>
+              <select id="opt-ingredients" name="opt-ingredients" multiple>
                 <option value="option1">Option 1</option>
                 <option value="option2">Option 2</option>
                 <option value="option3">Option 3</option>
