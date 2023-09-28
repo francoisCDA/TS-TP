@@ -1,6 +1,28 @@
 import { recipes } from "./data/recipes.js";
 import { Recipe } from "./interface/recipe.js";
 
+//affichage des "boutons-menus"
+
+const domLstRecettes = document.querySelector('.recettes-container') as HTMLDivElement ;
+const modalRecette = document.querySelector("dialog") as HTMLDialogElement ;
+const btnModalExit = document.getElementById("btnCloseModal") as HTMLButtonElement ;
+
+// les sélecteurs qui servent de filtre
+
+const selectIngredients = document.getElementById('opt-ingredients') as HTMLElement;
+const sliderPrep = document.getElementById('tmp-Preparation') as HTMLInputElement;
+const sliderCuisson = document.getElementById('tmp-cuisson') as HTMLInputElement;
+const barRecherche = document.getElementById('recherche') as HTMLInputElement;
+
+// label pour les temps sélectionnés.
+
+const lblPrepTime = document.getElementById('lbl-tmp-preparation') as HTMLLabelElement;
+const lblCookTime = document.getElementById('lbl-tmp-cuisson') as HTMLLIElement;
+
+//variable globale, paramètres de filtre initiaux
+
+let tempPreparation: number = 15, tempCuisson: number = 30, recherche: string = '', selectedIngre: string[] =[];
+
 
 // récupération des recettes
 
@@ -16,8 +38,6 @@ const recettesKeys = Object.keys(recipes);
 for (let i = 0 ; i < recipesList.length ; i++) {
     recipesList[i].id =recettesKeys[i];
 }
-
-console.dir(recipesList);
 
 
 //filtres
@@ -44,32 +64,30 @@ function checkIngredients(recIngr: {}, ingrsRequired: string[]): boolean {
         
 }
 
-function megaFilter(tmpPrep: number = 15, tmpCook: number = 30, nom: string = '', lstIngre: string[] = []): Recipe[] {
+
+function megaFilter(tmpPrep: number = Number(sliderPrep.value), tmpCook: number = Number(sliderCuisson.value), nom: string = barRecherche.value, lstIngre: string[] = selectedIngre): void {
 
     let recettesOk = recipesList.filter( recette  => parseInt(recette.prepTime) <= tmpPrep )
     recettesOk = recettesOk.filter( recette  => parseInt(recette.cookTime) <= tmpCook )
     recettesOk = recettesOk.filter( recette  => recette.name.substring(0,nom.length).toLowerCase() == nom.toLowerCase() )
     recettesOk = recettesOk.filter( recette => checkIngredients(recette.ingredients, lstIngre) )
     
-    return recettesOk;
+    mkButtonMenus(recettesOk);
+    //return recettesOk;
 }
 
 
-//affichage des "boutons-menus"
 
-const domLstRecettes = document.querySelector('.recettes-container') as HTMLDivElement ;
-const modalRecette = document.querySelector("dialog") as HTMLDialogElement ;
-const btnModalExit = document.getElementById("btnCloseModal") as HTMLButtonElement ;
-
-// utilisé  pour les 2 listes dans les modales, et pour les options dans le select, le nom ne correpond plus à ce qu'elle a finie par faire...
+// utilisé  pour les 2 listes dans les modales, et pour les options dans le select
 function liGenerator(parent: HTMLElement, items: string[], type: string): void {
     parent.innerHTML = '' ;
     
-    const liList: HTMLLIElement[] = [];
-    
+    type myHTMLElement = HTMLOptionElement | HTMLLIElement ;
+        
     items.forEach (item => {
-        const newLi = document.createElement(type);
+        const newLi: myHTMLElement = document.createElement(type) as myHTMLElement;  // #typescriptcasselespieds
         newLi.innerText = item;
+        if (type == 'option') { newLi.value = item }
                 
         parent.appendChild(newLi);
     })
@@ -98,7 +116,8 @@ function updModal(recet: Recipe): void {
 }
 
 
-function mkButtonMenus(lstRecets: Recipe[]): void {
+function mkButtonMenus(lstRecets: Recipe[] = recipesList): void {
+    domLstRecettes.innerHTML = '' ;
     lstRecets.forEach( recet => {
         const newButton = document.createElement('button');
         newButton.innerText = recet.name ;
@@ -110,51 +129,77 @@ function mkButtonMenus(lstRecets: Recipe[]): void {
 
         domLstRecettes.appendChild(newButton);
     })
+
+    lblPrepTime.innerText = `Preparation time : ${sliderPrep.value} min` ;
+    lblCookTime.innerText = `Cooking time : ${sliderCuisson.value} min` ;
+
 }
 
 btnModalExit.onclick = () => { modalRecette.close() }
 
-mkButtonMenus(recipesList);
 
 
-// les selecteurs filtres
+// les selecteurs / filtres
 
-const selectIngredients = document.getElementById('opt-ingredients') as HTMLElement;
-
+//initialisation et affichage
 function mkIngredientsOpt(): void {
 
+    const tPrep: number[] = [] ;
+    const tCook: number[] = [] ;
     const allIngredients: string[] = [] ;
 
+
     recipesList.forEach( recette => { 
+
+        tPrep.push(parseInt(recette.prepTime));
+        tCook.push(parseInt(recette.cookTime));
         
         for (const ingredient in recette.ingredients) {
             if (!allIngredients.includes(recette.ingredients[ingredient].name)) { allIngredients.push(recette.ingredients[ingredient].name)}
         }
+
+
     });
 
-    console.dir(allIngredients);
+    sliderPrep.setAttribute("min",`${Math.min(...tPrep)}`);
+    sliderPrep.setAttribute("max",`${Math.max(...tPrep)}`);
+    sliderPrep.value = `${Math.max(...tPrep)}`;
+    tempPreparation = Math.max(...tPrep);
+    
+    sliderCuisson.setAttribute("min",`${Math.min(...tCook)}`);
+    sliderCuisson.setAttribute("max",`${Math.max(...tCook)}`);
+    sliderCuisson.value = `${Math.max(...tCook)}`;
+    tempCuisson = Math.max(...tCook);
+
+    barRecherche.value = '';
+    recherche = '';
+
     liGenerator(selectIngredients,allIngredients,'option');
-
-    //const lstOpt 
-
-
-    //selectIngredients.innerHTML = '';
+    
+    mkButtonMenus();
 }
 
 mkIngredientsOpt();
 
 
+function chkOption(): void {
+
+    
+    const lstOpt = document.querySelectorAll("#opt-ingredients > option ") as NodeListOf<HTMLOptionElement> ;
+    
+    selectedIngre = [] ;
+
+    lstOpt.forEach( opt => { if (opt.selected) { selectedIngre.push(opt.value) } })
+    
+    megaFilter()
+}
 
 
 
-
-
-
-
-
-
-
-
+selectIngredients.onchange = () => { chkOption()  }
+sliderCuisson.onchange = () => { megaFilter() }
+sliderPrep.onchange = () => { megaFilter() }
+barRecherche.onkeyup = () => { megaFilter() }
 
 
 
