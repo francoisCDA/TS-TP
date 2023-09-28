@@ -44,3 +44,13 @@ input[type="range"] {
     width: 100%;
 }
 
+.infos-tmps {
+    width: 100%;
+    display: flex;
+    justify-content: space-around;
+}
+
+img {
+    max-width: 15px;
+    height: auto;
+}

@@ -14,14 +14,18 @@ const sliderPrep = document.getElementById('tmp-Preparation') as HTMLInputElemen
 const sliderCuisson = document.getElementById('tmp-cuisson') as HTMLInputElement;
 const barRecherche = document.getElementById('recherche') as HTMLInputElement;
 
+// bouton reset formulaire
+
+const btnReset = document.getElementById('btn-reset') as HTMLButtonElement;
+
 // label pour les temps sélectionnés.
 
 const lblPrepTime = document.getElementById('lbl-tmp-preparation') as HTMLLabelElement;
 const lblCookTime = document.getElementById('lbl-tmp-cuisson') as HTMLLIElement;
 
-//variable globale, paramètres de filtre initiaux
+//tableaux des ingredients sélectionnés par l'utilisateur
 
-let tempPreparation: number = 15, tempCuisson: number = 30, recherche: string = '', selectedIngre: string[] =[];
+let selectedIngre: string[] =[];
 
 
 // récupération des recettes
@@ -73,7 +77,6 @@ function megaFilter(tmpPrep: number = Number(sliderPrep.value), tmpCook: number 
     recettesOk = recettesOk.filter( recette => checkIngredients(recette.ingredients, lstIngre) )
     
     mkButtonMenus(recettesOk);
-    //return recettesOk;
 }
 
 
@@ -91,10 +94,9 @@ function liGenerator(parent: HTMLElement, items: string[], type: string): void {
                 
         parent.appendChild(newLi);
     })
-  
 }
 
-
+// affiche la modale
 function updModal(recet: Recipe): void {
 
     const modalInfo = document.querySelectorAll('.input-modale') as NodeListOf<HTMLSpanElement> ;
@@ -115,13 +117,21 @@ function updModal(recet: Recipe): void {
 
 }
 
-
+//génère les boutons 
 function mkButtonMenus(lstRecets: Recipe[] = recipesList): void {
     domLstRecettes.innerHTML = '' ;
     lstRecets.forEach( recet => {
         const newButton = document.createElement('button');
-        newButton.innerText = recet.name ;
-       // newButton.setAttribute("data-key",(recet.id)? recet.id : (new Date).toString()); // affectation de la clé en data-set
+        newButton.innerHTML = `<p>${recet.name}</p> 
+        <hr>
+        <div class="infos-tmps">
+            <div><img src="./img/chef-hat.svg" alt="toque"> <span>${recet.prepTime}</span> </div>
+            <div><img src="./img/fire.svg" alt="toque"> <span>${recet.cookTime}</span> </div>
+        </div>
+        `;
+      
+           
+        // newButton.setAttribute("data-key",(recet.id)? recet.id : (new Date).toString()); // affectation de la clé en data-set
         newButton.onclick = () => {
             updModal(recet) ;      // passage de l'objet complet en paramètre, ce qui rend le data-key inutile
             modalRecette.showModal();
@@ -135,6 +145,7 @@ function mkButtonMenus(lstRecets: Recipe[] = recipesList): void {
 
 }
 
+// ferme la modale
 btnModalExit.onclick = () => { modalRecette.close() }
 
 
@@ -148,7 +159,6 @@ function mkIngredientsOpt(): void {
     const tCook: number[] = [] ;
     const allIngredients: string[] = [] ;
 
-
     recipesList.forEach( recette => { 
 
         tPrep.push(parseInt(recette.prepTime));
@@ -158,52 +168,49 @@ function mkIngredientsOpt(): void {
             if (!allIngredients.includes(recette.ingredients[ingredient].name)) { allIngredients.push(recette.ingredients[ingredient].name)}
         }
 
-
     });
 
     sliderPrep.setAttribute("min",`${Math.min(...tPrep)}`);
     sliderPrep.setAttribute("max",`${Math.max(...tPrep)}`);
     sliderPrep.value = `${Math.max(...tPrep)}`;
-    tempPreparation = Math.max(...tPrep);
     
     sliderCuisson.setAttribute("min",`${Math.min(...tCook)}`);
     sliderCuisson.setAttribute("max",`${Math.max(...tCook)}`);
     sliderCuisson.value = `${Math.max(...tCook)}`;
-    tempCuisson = Math.max(...tCook);
-
+    
     barRecherche.value = '';
-    recherche = '';
-
+    
     liGenerator(selectIngredients,allIngredients,'option');
     
-    mkButtonMenus();
 }
 
-mkIngredientsOpt();
-
-
+// enregistre les éléments sélectionnés par l'utilisateur.
 function chkOption(): void {
-
-    
     const lstOpt = document.querySelectorAll("#opt-ingredients > option ") as NodeListOf<HTMLOptionElement> ;
-    
     selectedIngre = [] ;
-
-    lstOpt.forEach( opt => { if (opt.selected) { selectedIngre.push(opt.value) } })
-    
-    megaFilter()
+    lstOpt.forEach( opt => { if (opt.selected) { selectedIngre.push(opt.value) } });
+    megaFilter() ;
 }
 
-
-
-selectIngredients.onchange = () => { chkOption()  }
+// évèments des filtres
+selectIngredients.onchange = () => { chkOption() }
 sliderCuisson.onchange = () => { megaFilter() }
 sliderPrep.onchange = () => { megaFilter() }
 barRecherche.onkeyup = () => { megaFilter() }
 
 
+//init 
+function init(): void {
+    mkIngredientsOpt();
+    mkButtonMenus();
+}
 
 
+// bouton reset 
+btnReset.onclick = () => { init() };
+
+// démarrage
+init(); 
 
 
 

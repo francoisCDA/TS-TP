@@ -6,9 +6,10 @@ const selectIngredients = document.getElementById('opt-ingredients');
 const sliderPrep = document.getElementById('tmp-Preparation');
 const sliderCuisson = document.getElementById('tmp-cuisson');
 const barRecherche = document.getElementById('recherche');
+const btnReset = document.getElementById('btn-reset');
 const lblPrepTime = document.getElementById('lbl-tmp-preparation');
 const lblCookTime = document.getElementById('lbl-tmp-cuisson');
-let tempPreparation = 15, tempCuisson = 30, recherche = '', selectedIngre = [];
+let selectedIngre = [];
 const recipesList = [];
 for (const cle in recipes) {
     recipesList.push(recipes[cle]);
@@ -66,7 +67,13 @@ function mkButtonMenus(lstRecets = recipesList) {
     domLstRecettes.innerHTML = '';
     lstRecets.forEach(recet => {
         const newButton = document.createElement('button');
-        newButton.innerText = recet.name;
+        newButton.innerHTML = `<p>${recet.name}</p> 
+        <hr>
+        <div class="infos-tmps">
+            <div><img src="./img/chef-hat.svg" alt="toque"> <span>${recet.prepTime}</span> </div>
+            <div><img src="./img/fire.svg" alt="toque"> <span>${recet.cookTime}</span> </div>
+        </div>
+        `;
         newButton.onclick = () => {
             updModal(recet);
             modalRecette.showModal();
@@ -93,17 +100,12 @@ function mkIngredientsOpt() {
     sliderPrep.setAttribute("min", `${Math.min(...tPrep)}`);
     sliderPrep.setAttribute("max", `${Math.max(...tPrep)}`);
     sliderPrep.value = `${Math.max(...tPrep)}`;
-    tempPreparation = Math.max(...tPrep);
     sliderCuisson.setAttribute("min", `${Math.min(...tCook)}`);
     sliderCuisson.setAttribute("max", `${Math.max(...tCook)}`);
     sliderCuisson.value = `${Math.max(...tCook)}`;
-    tempCuisson = Math.max(...tCook);
     barRecherche.value = '';
-    recherche = '';
     liGenerator(selectIngredients, allIngredients, 'option');
-    mkButtonMenus();
 }
-mkIngredientsOpt();
 function chkOption() {
     const lstOpt = document.querySelectorAll("#opt-ingredients > option ");
     selectedIngre = [];
@@ -116,3 +118,9 @@ selectIngredients.onchange = () => { chkOption(); };
 sliderCuisson.onchange = () => { megaFilter(); };
 sliderPrep.onchange = () => { megaFilter(); };
 barRecherche.onkeyup = () => { megaFilter(); };
+function init() {
+    mkIngredientsOpt();
+    mkButtonMenus();
+}
+btnReset.onclick = () => { init(); };
+init();
