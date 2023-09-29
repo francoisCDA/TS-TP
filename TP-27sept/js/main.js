@@ -1,7 +1,11 @@
 import { recipes } from "./data/recipes.js";
 const domLstRecettes = document.querySelector('.recettes-container');
-const modalRecette = document.querySelector("dialog");
-const btnModalExit = document.getElementById("btnCloseModal");
+const modalRecette = document.getElementById("affichage-recette");
+const modalFormulaire = document.getElementById("nouvelle-recette");
+const btnDeleteRecette = document.getElementById("deleteRecette");
+const btnModalRecetteExit = document.getElementById("btnCloseModalRecette");
+const btnModalFormExit = document.getElementById("btnCloseModalForm");
+const selectFormIngredients = document.getElementById("formSelectIngredients");
 const selectIngredients = document.getElementById('opt-ingredients');
 const sliderPrep = document.getElementById('tmp-Preparation');
 const sliderCuisson = document.getElementById('tmp-cuisson');
@@ -10,9 +14,10 @@ const btnReset = document.getElementById('btn-reset');
 const lblPrepTime = document.getElementById('lbl-tmp-preparation');
 const lblCookTime = document.getElementById('lbl-tmp-cuisson');
 let selectedIngre = [];
-const recipesList = [];
+let recipesList = [];
 for (const cle in recipes) {
     recipesList.push(recipes[cle]);
+    recipesList[recipesList.length - 1].id = cle;
 }
 function checkIngredients(recIngr, ingrsRequired) {
     if (ingrsRequired.length == 0) {
@@ -46,6 +51,11 @@ function liGenerator(parent, items, type) {
         parent.appendChild(newLi);
     });
 }
+function rmRecette(key) {
+    recipesList = recipesList.filter(recette => recette.id != key);
+    modalRecette.close();
+    mkButtonMenus();
+}
 function updModal(recet) {
     const modalInfo = document.querySelectorAll('.input-modale');
     modalInfo[0].innerText = recet.prepTime;
@@ -58,9 +68,23 @@ function updModal(recet) {
     recet.ingredients.forEach(ingr => lstIngreArray.push(`${ingr.name} (${ingr.amount})`));
     liGenerator(lstIngredients, lstIngreArray, 'li');
     liGenerator(lstInstructions, recet.instructions, 'li');
+    const key = (recet.id) ? recet.id : '';
+    btnDeleteRecette.onclick = () => { rmRecette(key); };
+}
+function newRecette() {
+    modalFormulaire.show();
+    const allIngredients = [];
+    recipesList.forEach(recette => {
+        for (const ingredient in recette.ingredients) {
+            if (!allIngredients.includes(recette.ingredients[ingredient].name)) {
+                allIngredients.push(recette.ingredients[ingredient].name);
+            }
+        }
+    });
+    liGenerator(selectFormIngredients, allIngredients, 'option');
 }
 function mkButtonMenus(lstRecets = recipesList) {
-    domLstRecettes.innerHTML = '';
+    domLstRecettes.innerHTML = `<p>Recettes<p>`;
     lstRecets.forEach(recet => {
         const newButton = document.createElement('button');
         newButton.innerHTML = `<p>${recet.name}</p> 
@@ -76,10 +100,15 @@ function mkButtonMenus(lstRecets = recipesList) {
         };
         domLstRecettes.appendChild(newButton);
     });
+    const newButton = document.createElement('button');
+    newButton.innerText = 'ajouter une recette';
+    newButton.onclick = () => { newRecette(); };
+    domLstRecettes.appendChild(newButton);
     lblPrepTime.innerText = `Preparation time : ${sliderPrep.value} min`;
     lblCookTime.innerText = `Cooking time : ${sliderCuisson.value} min`;
 }
-btnModalExit.onclick = () => { modalRecette.close(); };
+btnModalRecetteExit.onclick = () => { modalRecette.close(); };
+btnModalFormExit.onclick = () => { modalFormulaire.close(); };
 function mkIngredientsOpt() {
     const tPrep = [];
     const tCook = [];

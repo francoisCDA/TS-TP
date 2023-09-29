@@ -9,7 +9,7 @@
 </head>
 <body>
 
-    <dialog>
+    <dialog id="affichage-recette">
         <div class="container-modale">
             <div class="left">
               <span>Preparation Time</span>
@@ -29,7 +29,7 @@
             <div class="right">
               <div class="container-modale">
                 <span class="input-modale">Lorem ipsum dolor sit.</span> 
-                <button type="button" id="btnCloseModal">Fermer</button>
+                <button type="button" id="btnCloseModalRecette">Fermer</button>
               </div>
               <hr>
               <ul id="recette-script">
@@ -41,15 +41,102 @@
                 <li>Quos earum at beatae! Cupiditate dolorem dolore ea! Delectus, minus!</li>
                 <li>Magni voluptatem laboriosam ea nobis totam doloribus vero quidem consectetur.</li>
               </ul>
+              <div class="container-modale">
+                <button type="button" id="deleteRecette">Supprimer</button>
+              </div>
             </div>
 
         </div>
+
+    </dialog >
+    
+    <dialog id="nouvelle-recette">
+      <div class="container-modale">
+        <div class="left">
+          
+          <div>
+            <p>Nouvelle recette</p>
+           
+          </div>
+          <form>
+            <div class="form-group">
+              <label for="nomRecette">Nom de la recette:</label>
+              <input type="text" id="nomRecette" name="nomRecette" placeholder="Nom de la recette" required>
+            </div>
+        
+            <div class="form-group">
+              <label for="tempsPreparation">Temps de préparation (en minutes):</label>
+              <input type="number" id="tempsPreparation" name="tempsPreparation" min="0" step="1" required>
+            </div>
+        
+            <div class="form-group">
+              <label for="tempsCuisson">Temps de cuisson (en minutes):</label>
+              <input type="number" id="tempsCuisson" name="tempsCuisson" min="0" step="1" required>
+            </div>
+            
+            <div class="form-group">
+              <label for="nbrePersonnes">Nombre de personne:</label>
+              <input type="number" id="nbrePersonnes" name="nbrePersonnes" min="0" step="1" required>
+            </div>
+        
+       
+        </div>
+        <div class="right">
+          <p>Ingredients</p>
+          <div class="container-modale">
+            <div>
+              <label for="formSelectIngredients">Sélectioner des ingrédients:</label>
+              <select id="formSelectIngredients" name="formSelectIngredients" >
+                <option value="option1">Option 1</option>
+                <option value="option2">Option 2</option>
+                <option value="option3">Option 3</option>
+              </select>
+
+              <div class="form-group">
+                <label for="ingredient">Ajouter un ingrédient:</label>
+                <div>
+                  <input type="text" id="ingredient" name="ingredient" placeholder="Saisissez un ingrédient" required>
+                  <button type="button" id="btnAddIngredient">+</button>
+                </div>
+              </div>
+            </div>
+
+
+        
+            <div class="form-group">
+              <label for="ingredient">Quantité:</label>
+              <input type="text" id="ingredient" name="ingredient" placeholder="indiquer la quantité" required>
+            </div>
+            
+            <button type="button">Ajouter à la recette</button>
+
+          </div>
+
+
+            <div id="list-ingredients">
+
+            </div>
+          <p>Instructions</p>
+          <div class="form-group">
+            <label for="instructions">Liste d'instructions:</label>
+            <textarea id="instructions" name="instructions" placeholder="Saisissez les instructions"></textarea>
+          </div>
+          <div id="list-instructions">
+
+          </div>
+
+        </div>
+      </div>
+        <button type="submit" id="btnSaveRecette">Enregistrer</button>
+        <button type="button" id="btnCloseModalForm" >Annuler</button>
+      </form>
 
     </dialog>
    
     
     <div class="container">
-        <div class="form-container">
+      <div class="form-container">
+          <p>Filtres</p>
           <form>
 
             <div class="form-group">

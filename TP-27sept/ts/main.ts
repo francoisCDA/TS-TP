@@ -2,47 +2,43 @@ import { recipes } from "./data/recipes.js";
 import { Recipe } from "./interface/recipe.js";
 
 //affichage des "boutons-menus"
-
 const domLstRecettes = document.querySelector('.recettes-container') as HTMLDivElement ;
-const modalRecette = document.querySelector("dialog") as HTMLDialogElement ;
-const btnModalExit = document.getElementById("btnCloseModal") as HTMLButtonElement ;
+const modalRecette = document.getElementById("affichage-recette") as HTMLDialogElement ;
+const modalFormulaire = document.getElementById("nouvelle-recette") as HTMLDialogElement ;
+const btnDeleteRecette = document.getElementById("deleteRecette") as HTMLButtonElement ;
+
+//elements de modales
+const btnModalRecetteExit = document.getElementById("btnCloseModalRecette") as HTMLButtonElement ;
+const btnModalFormExit = document.getElementById("btnCloseModalForm") as HTMLButtonElement ;
+const selectFormIngredients = document.getElementById("formSelectIngredients") as HTMLSelectElement ;
+
 
 // les sélecteurs qui servent de filtre
-
 const selectIngredients = document.getElementById('opt-ingredients') as HTMLElement;
 const sliderPrep = document.getElementById('tmp-Preparation') as HTMLInputElement;
 const sliderCuisson = document.getElementById('tmp-cuisson') as HTMLInputElement;
 const barRecherche = document.getElementById('recherche') as HTMLInputElement;
 
 // bouton reset formulaire
-
 const btnReset = document.getElementById('btn-reset') as HTMLButtonElement;
 
 // label pour les temps sélectionnés
-
 const lblPrepTime = document.getElementById('lbl-tmp-preparation') as HTMLLabelElement;
 const lblCookTime = document.getElementById('lbl-tmp-cuisson') as HTMLLIElement;
 
 // tableaux des ingredients sélectionnés par l'utilisateur
-
 let selectedIngre: string[] =[];
 
 
 // récupération des recettes
 
-const recipesList: Recipe[] = [] ;
-for ( const cle in recipes ) { recipesList.push(recipes[cle]); }
+let recipesList: Recipe[] = [] ;
 
-
-// récupération des clés et affectation à chaque recette
-// actuellement inutile.
-/* 
-const recettesKeys = Object.keys(recipes);
-
-for (let i = 0 ; i < recipesList.length ; i++) {
-    recipesList[i].id =recettesKeys[i];
+for ( const cle in recipes ) { 
+    recipesList.push(recipes[cle]); 
+    recipesList[recipesList.length-1].id = cle;
 }
- */
+
 
 //filtres
 
@@ -95,6 +91,13 @@ function liGenerator(parent: HTMLElement, items: string[], type: string): void {
     })
 }
 
+function rmRecette(key: string): void {
+    recipesList = recipesList.filter( recette => recette.id != key );
+    modalRecette.close();
+    mkButtonMenus();
+}
+
+
 // affiche la modale pour la recette sélectionnée
 function updModal(recet: Recipe): void {
 
@@ -113,11 +116,34 @@ function updModal(recet: Recipe): void {
 
     liGenerator(lstIngredients, lstIngreArray,'li');
     liGenerator(lstInstructions, recet.instructions,'li');
+
+    const key: string = (recet.id) ? recet.id : '' ; // pourquoi ? parce que typescipt
+    btnDeleteRecette.onclick = () => { rmRecette(key) }
 }
+
+
+// formulaire nouvelle recette 
+
+function newRecette() : void {
+    modalFormulaire.show() ;
+
+    // copier-coller, à factoriser
+    const allIngredients: string[] = [] ; 
+    recipesList.forEach( recette => { 
+            // récupère la liste d'ingrédient
+            for (const ingredient in recette.ingredients) {
+                if (!allIngredients.includes(recette.ingredients[ingredient].name)) { allIngredients.push(recette.ingredients[ingredient].name)}
+            }
+    });
+
+    liGenerator(selectFormIngredients,allIngredients,'option');
+
+} 
+
 
 //génère les boutons 
 function mkButtonMenus(lstRecets: Recipe[] = recipesList): void {
-    domLstRecettes.innerHTML = '' ;
+    domLstRecettes.innerHTML = `<p>Recettes<p>` ;
     lstRecets.forEach( recet => {
         const newButton = document.createElement('button');
         newButton.innerHTML = `<p>${recet.name}</p> 
@@ -135,15 +161,24 @@ function mkButtonMenus(lstRecets: Recipe[] = recipesList): void {
         }
 
         domLstRecettes.appendChild(newButton);
+        
     })
+
+    const newButton = document.createElement('button');
+    newButton.innerText = 'ajouter une recette';
+    newButton.onclick = () => { newRecette() };
+
+    domLstRecettes.appendChild(newButton);
 
     lblPrepTime.innerText = `Preparation time : ${sliderPrep.value} min` ;
     lblCookTime.innerText = `Cooking time : ${sliderCuisson.value} min` ;
 
 }
 
-// ferme la modale
-btnModalExit.onclick = () => { modalRecette.close() }
+// fermer les modales
+btnModalRecetteExit.onclick = () => { modalRecette.close() };
+btnModalFormExit.onclick = () => { modalFormulaire.close()};
+
 
 // les selecteurs / filtres
 
