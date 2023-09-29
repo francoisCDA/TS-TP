@@ -14,10 +14,6 @@ const recipesList = [];
 for (const cle in recipes) {
     recipesList.push(recipes[cle]);
 }
-const recettesKeys = Object.keys(recipes);
-for (let i = 0; i < recipesList.length; i++) {
-    recipesList[i].id = recettesKeys[i];
-}
 function checkIngredients(recIngr, ingrsRequired) {
     if (ingrsRequired.length == 0) {
         return true;
@@ -105,6 +101,7 @@ function mkIngredientsOpt() {
     sliderCuisson.value = `${Math.max(...tCook)}`;
     barRecherche.value = '';
     liGenerator(selectIngredients, allIngredients, 'option');
+    mkButtonMenus();
 }
 function chkOption() {
     const lstOpt = document.querySelectorAll("#opt-ingredients > option ");
@@ -118,9 +115,5 @@ selectIngredients.onchange = () => { chkOption(); };
 sliderCuisson.onchange = () => { megaFilter(); };
 sliderPrep.onchange = () => { megaFilter(); };
 barRecherche.onkeyup = () => { megaFilter(); };
-function init() {
-    mkIngredientsOpt();
-    mkButtonMenus();
-}
-btnReset.onclick = () => { init(); };
-init();
+btnReset.onclick = () => { mkIngredientsOpt(); };
+mkIngredientsOpt();

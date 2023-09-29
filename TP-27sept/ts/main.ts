@@ -18,12 +18,12 @@ const barRecherche = document.getElementById('recherche') as HTMLInputElement;
 
 const btnReset = document.getElementById('btn-reset') as HTMLButtonElement;
 
-// label pour les temps sélectionnés.
+// label pour les temps sélectionnés
 
 const lblPrepTime = document.getElementById('lbl-tmp-preparation') as HTMLLabelElement;
 const lblCookTime = document.getElementById('lbl-tmp-cuisson') as HTMLLIElement;
 
-//tableaux des ingredients sélectionnés par l'utilisateur
+// tableaux des ingredients sélectionnés par l'utilisateur
 
 let selectedIngre: string[] =[];
 
@@ -35,18 +35,19 @@ for ( const cle in recipes ) { recipesList.push(recipes[cle]); }
 
 
 // récupération des clés et affectation à chaque recette
-// potentiellement inutile, je pense pouvoir m'en passer...
-
+// actuellement inutile.
+/* 
 const recettesKeys = Object.keys(recipes);
 
 for (let i = 0 ; i < recipesList.length ; i++) {
     recipesList[i].id =recettesKeys[i];
 }
-
+ */
 
 //filtres
 
-function checkIngredients(recIngr: {}, ingrsRequired: string[]): boolean {
+// vérifie les recettes qui nécessitent les ingrédients sélectionnés par l'utilisateur
+function checkIngredients(recIngr: {name: string, amount: string}[], ingrsRequired: string[]): boolean {
 
     if (ingrsRequired.length == 0) {
         return true ;
@@ -54,10 +55,9 @@ function checkIngredients(recIngr: {}, ingrsRequired: string[]): boolean {
         
         const lstIngreRec: string[] = [];
             
-        for ( const ind in recIngr ) { lstIngreRec.push(recIngr[ind].name) } 
-        // => erreur de compilation : Element implicitly has an 'any' type because expression of type 'string' can't be used to index type '{}'.
-        // No index signature with a parameter of type 'string' was found on type '{}'.ts(7053)
-        // mais ça fonctionne...
+        for ( const ind in recIngr ) { 
+            lstIngreRec.push(recIngr[ind].name);
+        } 
 
         const retBool: boolean[] = [];
 
@@ -68,7 +68,7 @@ function checkIngredients(recIngr: {}, ingrsRequired: string[]): boolean {
         
 }
 
-
+// génére une liste de recettes compatibles avec la sélection et l'envoie à l'affichage; 
 function megaFilter(tmpPrep: number = Number(sliderPrep.value), tmpCook: number = Number(sliderCuisson.value), nom: string = barRecherche.value, lstIngre: string[] = selectedIngre): void {
 
     let recettesOk = recipesList.filter( recette  => parseInt(recette.prepTime) <= tmpPrep )
@@ -78,7 +78,6 @@ function megaFilter(tmpPrep: number = Number(sliderPrep.value), tmpCook: number 
     
     mkButtonMenus(recettesOk);
 }
-
 
 
 // utilisé  pour les 2 listes dans les modales, et pour les options dans le select
@@ -96,7 +95,7 @@ function liGenerator(parent: HTMLElement, items: string[], type: string): void {
     })
 }
 
-// affiche la modale
+// affiche la modale pour la recette sélectionnée
 function updModal(recet: Recipe): void {
 
     const modalInfo = document.querySelectorAll('.input-modale') as NodeListOf<HTMLSpanElement> ;
@@ -114,7 +113,6 @@ function updModal(recet: Recipe): void {
 
     liGenerator(lstIngredients, lstIngreArray,'li');
     liGenerator(lstInstructions, recet.instructions,'li');
-
 }
 
 //génère les boutons 
@@ -129,11 +127,10 @@ function mkButtonMenus(lstRecets: Recipe[] = recipesList): void {
             <div><img src="./img/fire.svg" alt="toque"> <span>${recet.cookTime}</span> </div>
         </div>
         `;
-      
-           
+                 
         // newButton.setAttribute("data-key",(recet.id)? recet.id : (new Date).toString()); // affectation de la clé en data-set
         newButton.onclick = () => {
-            updModal(recet) ;      // passage de l'objet complet en paramètre, ce qui rend le data-key inutile
+            updModal(recet) ;      // passage de l'objet complet en paramètre, ce qui rend la data-key inutile
             modalRecette.showModal();
         }
 
@@ -148,8 +145,6 @@ function mkButtonMenus(lstRecets: Recipe[] = recipesList): void {
 // ferme la modale
 btnModalExit.onclick = () => { modalRecette.close() }
 
-
-
 // les selecteurs / filtres
 
 //initialisation et affichage
@@ -161,27 +156,33 @@ function mkIngredientsOpt(): void {
 
     recipesList.forEach( recette => { 
 
-        tPrep.push(parseInt(recette.prepTime));
-        tCook.push(parseInt(recette.cookTime));
+        tPrep.push(parseInt(recette.prepTime)); // récupère les temps de préparation
+        tCook.push(parseInt(recette.cookTime)); // récupère les temps de cuisson
         
+        // récupère la liste d'ingrédient
         for (const ingredient in recette.ingredients) {
             if (!allIngredients.includes(recette.ingredients[ingredient].name)) { allIngredients.push(recette.ingredients[ingredient].name)}
         }
 
     });
 
+    //initialise les paramètres du slider préparation
     sliderPrep.setAttribute("min",`${Math.min(...tPrep)}`);
     sliderPrep.setAttribute("max",`${Math.max(...tPrep)}`);
     sliderPrep.value = `${Math.max(...tPrep)}`;
     
+    //initialise les paramètres du slider cuisson
     sliderCuisson.setAttribute("min",`${Math.min(...tCook)}`);
     sliderCuisson.setAttribute("max",`${Math.max(...tCook)}`);
     sliderCuisson.value = `${Math.max(...tCook)}`;
     
+    // vide la barre de recherche
     barRecherche.value = '';
     
+    // initialise la liste des ingéredients à partir de la liste récupérée plus haut
     liGenerator(selectIngredients,allIngredients,'option');
     
+    mkButtonMenus();
 }
 
 // enregistre les éléments sélectionnés par l'utilisateur.
@@ -189,28 +190,19 @@ function chkOption(): void {
     const lstOpt = document.querySelectorAll("#opt-ingredients > option ") as NodeListOf<HTMLOptionElement> ;
     selectedIngre = [] ;
     lstOpt.forEach( opt => { if (opt.selected) { selectedIngre.push(opt.value) } });
-    megaFilter() ;
+    megaFilter();
 }
 
 // évèments des filtres
-selectIngredients.onchange = () => { chkOption() }
-sliderCuisson.onchange = () => { megaFilter() }
-sliderPrep.onchange = () => { megaFilter() }
-barRecherche.onkeyup = () => { megaFilter() }
-
-
-//init 
-function init(): void {
-    mkIngredientsOpt();
-    mkButtonMenus();
-}
-
+selectIngredients.onchange = () => { chkOption() };
+sliderCuisson.onchange = () => { megaFilter() };
+sliderPrep.onchange = () => { megaFilter() };
+barRecherche.onkeyup = () => { megaFilter() };
 
 // bouton reset 
-btnReset.onclick = () => { init() };
+btnReset.onclick = () => { mkIngredientsOpt() };
 
 // démarrage
-init(); 
-
+mkIngredientsOpt();
 
 
